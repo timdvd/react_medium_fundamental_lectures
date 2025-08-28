@@ -1,6 +1,5 @@
+# Error Boundaries
 # Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -9,7 +8,6 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
@@ -17,7 +15,6 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
@@ -26,8 +23,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `yarn eject`
 
@@ -39,32 +34,68 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+#⚠️ What is an Error Boundary?
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### An Error Boundary is a special React component that catches JavaScript errors anywhere in its child component tree and prevents the whole app from crashing.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Instead of showing a blank screen, it lets you display a fallback UI.
 
-### Code Splitting
+## 🛠 When to use Error Boundaries
+ - Catch runtime errors in rendering, lifecycle methods, and constructors of child components.
+ - Show a nice error message instead of crashing.
+ - Log errors (e.g., send to a monitoring service like Sentry).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 👉 Error Boundaries do NOT catch:
+ - Event handler errors
+ - Asynchronous code (e.g., setTimeout, Promises)
+ - Server-side rendering (SSR)
+ - Errors thrown inside an Error Boundary itself
 
-### Analyzing the Bundle Size
+## ✅ Example: Creating an Error Boundary
+```
+import React from "react";
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
 
-### Making a Progressive Web App
+  static getDerivedStateFromError(error) {
+    // Update state so fallback UI shows
+    return { hasError: true };
+  }
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  componentDidCatch(error, info) {
+    // Log error details (to console, Sentry, etc.)
+    console.error("Error caught by boundary:", error, info);
+  }
 
-### Advanced Configuration
+  render() {
+    if (this.state.hasError) {
+      return <h2>Something went wrong. 😢</h2>;
+    }
+    return this.props.children;
+  }
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+export default ErrorBoundary;
+```
+🖼 Usage Example
+```
+import ErrorBoundary from "./ErrorBoundary";
+import BuggyComponent from "./BuggyComponent";
 
-### Deployment
+function App() {
+  return (
+    <div>
+      <ErrorBoundary>
+        <BuggyComponent />
+      </ErrorBoundary>
+    </div>
+  );
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### If BuggyComponent crashes, the ErrorBoundary will catch the error and show the fallback UI instead of crashing the whole app.
+### More information is here: https://react.dev/reference/react/Component#componentdidcatch
