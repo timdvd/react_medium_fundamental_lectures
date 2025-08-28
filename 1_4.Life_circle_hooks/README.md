@@ -1,6 +1,5 @@
+# Components Life Circle
 # Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
 
@@ -9,7 +8,6 @@ In the project directory, you can run:
 ### `yarn start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
@@ -17,7 +15,6 @@ You will also see any lint errors in the console.
 ### `yarn test`
 
 Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
@@ -26,8 +23,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `yarn eject`
 
@@ -39,32 +34,59 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+# 🔄 React Component Lifecycle
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+A component’s lifecycle can be divided into three main phases:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 1. Mounting (when component is being created & inserted into the DOM)
 
-### Code Splitting
+### Methods (class components):
+ - constructor() → Initialize state & bind methods.
+ - static getDerivedStateFromProps() → Sync state from props (rarely used).
+ - render() → Returns JSX.
+ - componentDidMount() → Runs after component is mounted (good for API calls, subscriptions, DOM operations).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 2. Updating (when props or state change)
 
-### Analyzing the Bundle Size
+### Methods:
+ - static getDerivedStateFromProps() → Called again if props change.
+ - shouldComponentUpdate() → Lets you control re-rendering for performance.
+ - render() → Re-renders UI with new data.
+ - getSnapshotBeforeUpdate() → Capture info before DOM updates (e.g., scroll position).
+ - componentDidUpdate() → Runs after update (good for data fetching if props changed).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 3. Unmounting (when component is removed from DOM)
 
-### Making a Progressive Web App
+### Method:
+ - componentWillUnmount() → Cleanup tasks (cancel timers, remove listeners, unsubscribe).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🔹 React Hooks equivalent
 
-### Advanced Configuration
+### In functional components with Hooks, lifecycle effects are handled using useEffect:
+ - Mounting → useEffect(() => { ... }, [])
+ - Updating → useEffect(() => { ... }, [state, props])
+ - Unmounting → Cleanup function in useEffect
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+import { useEffect, useState } from "react";
 
-### Deployment
+function Example() {
+  const [count, setCount] = useState(0);
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+  useEffect(() => {
+    console.log("Mounted or updated:", count);
 
-### `yarn build` fails to minify
+    return () => {
+      console.log("Cleanup before unmount or before next effect");
+    };
+  }, [count]); 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Clicked {count} times
+    </button>
+  );
+}
+```
+
+### ⚡Would you like me to make you a visual diagram of the lifecycle flow so it’s easier to understand, or do you prefer a code-only explanation?
