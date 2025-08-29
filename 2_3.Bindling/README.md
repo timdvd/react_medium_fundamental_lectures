@@ -45,4 +45,6 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
  - ✅ Make React (and JSX/TSX) run in browsers by transpiling
  - ✅ Handle imports like images, CSS, fonts
 
+## Install all packages ( type in cmd npm i in your working directory )
+
 ### More information is here: https://create-react-app.dev/docs/deployment/
