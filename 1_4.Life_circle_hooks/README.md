@@ -89,5 +89,7 @@ function Example() {
 }
 ```
 
+## Install all packages ( type in cmd `npm i` in your working directory )
+
 ### ⚡Would you like me to make you a visual diagram of the lifecycle flow so it’s easier to understand, or do you prefer a code-only explanation?
 ### More information is here: https://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/
