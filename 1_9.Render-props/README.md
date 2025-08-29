@@ -33,6 +33,3 @@ export default function App() {
   );
 }
 ```
-### More information is here:
- - https://react.dev/learn/manipulating-the-dom-with-refs
- - https://react.dev/reference/react/forwardRef
