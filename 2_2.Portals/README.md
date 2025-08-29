@@ -1,6 +1,4 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Portals
 
 ## Available Scripts
 
@@ -8,16 +6,15 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
+The page will reload when you make changes.
 You may also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Launches the test runner in the interactive watch mode.
 
 ### `npm run build`
 
@@ -26,8 +23,6 @@ It correctly bundles React in production mode and optimizes the build for the be
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 ### `npm run eject`
 
@@ -39,32 +34,73 @@ Instead, it will copy all the configuration files and the transitive dependencie
 
 You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
 
-## Learn More
+## 🔹 What is a React Portal?
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Normally, React renders components inside the DOM tree hierarchy of their parent.
+### Portals let you render children into a different part of the DOM tree while keeping them part of the same React component tree.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 🔹 Basic Syntax
+```
+import { createPortal } from "react-dom";
 
-### Code Splitting
+function MyPortal({ children }) {
+  return createPortal(
+    children,
+    document.getElementById("portal-root") // target DOM node
+  );
+}
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### In index.html, you might have:
+```
+<div id="root"></div>
+<div id="portal-root"></div> <!-- portal target -->
+```
+### 🔹 Example: Modal with Portals
+```
+import { createPortal } from "react-dom";
+import { useState } from "react";
 
-### Analyzing the Bundle Size
+function Modal({ children, onClose }) {
+  return createPortal(
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50">
+      <div className="bg-white p-6 rounded-xl shadow-lg relative">
+        {children}
+        <button 
+          className="absolute top-2 right-2 text-gray-600" 
+          onClick={onClose}
+        >
+          ✕
+        </button>
+      </div>
+    </div>,
+    document.getElementById("portal-root")
+  );
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+export default function App() {
+  const [open, setOpen] = useState(false);
 
-### Making a Progressive Web App
+  return (
+    <div className="p-6">
+      <button onClick={() => setOpen(true)} className="bg-blue-500 text-white px-4 py-2 rounded">
+        Open Modal
+      </button>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+      {open && (
+        <Modal onClose={() => setOpen(false)}>
+          <h2 className="text-xl font-bold">Hello from Portal!</h2>
+          <p>This is rendered outside the main DOM tree.</p>
+        </Modal>
+      )}
+    </div>
+  );
+}
+```
+##🔹 When to Use Portals
+ - ✅ Modals, dialogs, and popups (to avoid CSS overflow: hidden / z-index issues)
+ - ✅ Tooltips
+ - ✅ Dropdown menus
+ - ✅ Anything that should "break out" of parent’s CSS/DOM constraints
 
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### More information is here: https://react.dev/reference/react-dom/createPortal
