@@ -103,4 +103,6 @@ export default function App() {
  - ✅ Dropdown menus
  - ✅ Anything that should "break out" of parent’s CSS/DOM constraints
 
+## Install all packages ( type in cmd npm i in your working directory )
+
 ### More information is here: https://react.dev/reference/react-dom/createPortal
