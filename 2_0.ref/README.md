@@ -93,6 +93,8 @@ export default App;
  - ✅ Integrating with third-party libraries (charts, maps, etc.)
  - ❌ Avoid using refs for data flow. If something should affect rendering → use state instead.
 
+## Install all packages ( type in cmd npm i in your working directory )
+
 ### More information is here:
  - https://react.dev/learn/manipulating-the-dom-with-refs
  - https://react.dev/reference/react/forwardRef
