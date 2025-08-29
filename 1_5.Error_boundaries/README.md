@@ -97,5 +97,7 @@ function App() {
 }
 ```
 
+## Install all packages ( type in cmd `npm i` in your working directory )
+
 ### If BuggyComponent crashes, the ErrorBoundary will catch the error and show the fallback UI instead of crashing the whole app.
 ### More information is here: https://react.dev/reference/react/Component#componentdidcatch
